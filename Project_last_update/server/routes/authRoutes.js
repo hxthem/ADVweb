@@ -27,6 +27,7 @@ const buildUserPayload = (user) => ({
   department: user.department,
   aiFocus: user.aiFocus,
   bio: user.bio,
+  isProfileComplete: user.isProfileComplete,
 });
 
 // ==========================================
@@ -104,6 +105,7 @@ router.get("/google", (req, res, next) => {
   passport.authenticate("google", {
     scope: ["profile", "email"],
     state: role || "student", // Pass role to callback via state
+    prompt: "select_account", // ⚡ Forces Google to show account selection screen
   })(req, res, next);
 });
 
@@ -127,6 +129,7 @@ router.get("/facebook", (req, res, next) => {
   passport.authenticate("facebook", {
     scope: ["email"],
     state: role || "student",
+    auth_type: "reauthenticate", // ⚡ Forces Facebook to re-verify identity
   })(req, res, next);
 });
 

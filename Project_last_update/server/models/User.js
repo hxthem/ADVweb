@@ -60,6 +60,10 @@ const UserSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    isProfileComplete: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Outlet, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -9,7 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import AuthSuccess from "./pages/AuthSuccess.jsx";
 
 import Navbar from "@/components/Navbar";
-import { AuthProvider } from "@/lib/auth";
+import { AuthProvider, useAuth } from "@/lib/auth";
 
 // Pages
 import Index from "./pages/Index.jsx";
@@ -21,20 +21,32 @@ import ResourceDetailsPage from "./pages/ResourceDetailsPage.jsx";
 import PartnersPage from "./pages/PartnersPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
+import CompleteProfilePage from "./pages/CompleteProfilePage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import CreateWorkshopPage from "./pages/CreateWorkshopPage.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 const queryClient = new QueryClient();
 
-const AppLayout = () => (
-  <>
-    <Navbar />
-    <main className="min-h-screen">
-      <Outlet />
-    </main>
-  </>
-);
+const AppLayout = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
+
+  // If logged in but profile is incomplete, force completion
+  if (user && user.isProfileComplete === false) {
+    return <Navigate to="/complete-profile" replace />;
+  }
+
+  return (
+    <>
+      <Navbar />
+      <main className="min-h-screen pt-16 md:pt-0">
+        <Outlet />
+      </main>
+    </>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -50,8 +62,8 @@ const App = () => (
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
 
-              {/* ✅ هذا الجديد */}
               <Route path="/auth-success" element={<AuthSuccess />} />
+              <Route path="/complete-profile" element={<CompleteProfilePage />} />
 
               {/* --- داخل Layout --- */}
               <Route element={<AppLayout />}>

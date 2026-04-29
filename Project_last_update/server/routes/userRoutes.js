@@ -21,6 +21,41 @@ router.get("/representatives", async (req, res) => {
   }
 });
 
+/**
+ * @route   PATCH /api/users/complete-profile
+ * @desc    إكمال بيانات المستخدم بعد التسجيل الاجتماعي
+ * @access  Private
+ */
+router.patch("/complete-profile", protect, async (req, res) => {
+  try {
+    const { role, department, fullName } = req.body;
+    
+    const updateData = {
+      fullName,
+      department,
+      isProfileComplete: true
+    };
+
+    if (role === "representative") {
+      updateData.role = "student"; // Default role until approved
+      updateData.repStatus = "pending";
+    } else {
+      updateData.role = "student";
+      updateData.repStatus = "none";
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      updateData,
+      { new: true }
+    ).select("-password");
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Error completing profile" });
+  }
+});
+
 // ==========================================
 // 2. مسارات الإدارة (Admin Routes)
 // ==========================================

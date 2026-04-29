@@ -65,13 +65,17 @@ export const AuthProvider = ({ children }) => {
       const data = await res.json();
 
       if (res.ok) {
-        setUser(data.user || data);
+        const userData = data.user || data;
+        setUser(userData);
+        return userData;
       } else {
         localStorage.removeItem("aih_token");
+        return null;
       }
     } catch (err) {
       console.error("OAuth login failed:", err);
       localStorage.removeItem("aih_token");
+      return null;
     }
   };
 
