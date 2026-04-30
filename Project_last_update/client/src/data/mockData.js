@@ -1,3 +1,8 @@
+import naftalLogo from "@/assets/partners/naftal.png";
+import djezzyLogo from "@/assets/partners/djezzy.png";
+import condorLogo from "@/assets/partners/condor.png";
+import itcLogo from "@/assets/partners/itc.png";
+
 export const departments = [
   { id: "1", name: "Computer Science", workshopCount: 12, representativeCount: 3, participantCount: 145 },
   { id: "2", name: "Biology", workshopCount: 6, representativeCount: 2, participantCount: 78 },
@@ -282,6 +287,10 @@ export const partners = [
   { id: "2", name: "University Rectorate", type: "rectorate", description: "Institutional support for AI House operations and cross-departmental coordination." },
   { id: "3", name: "Sonatrach Digital Lab", type: "industry", description: "Industry partnership for AI applications in energy sector research." },
   { id: "4", name: "CERIST Research Center", type: "academic", description: "Collaborative research in NLP and information retrieval for Arabic languages." },
+  { id: "5", name: "Naftal", type: "industry", logo: naftalLogo, description: "Strategic partnership with Algeria's national petroleum distribution company for AI-driven logistics optimization." },
+  { id: "6", name: "Djezzy", type: "industry", logo: djezzyLogo, description: "Collaborating on telecommunications data analytics and AI-powered customer service frameworks." },
+  { id: "7", name: "Condor", type: "industry", logo: condorLogo, description: "Research partnership for AI integration in smart home appliances and electronics manufacturing." },
+  { id: "8", name: "ITC Blida", type: "academic", logo: itcLogo, description: "The official Computer Science Club of University Blida 1, fostering student-led AI innovation." },
 ];
 
 export const topics = ["Python for Research", "Data Science", "Automation", "AI Pedagogy"];

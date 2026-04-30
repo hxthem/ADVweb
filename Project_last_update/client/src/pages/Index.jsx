@@ -13,6 +13,7 @@ import heroImage from "@/assets/landing-hero.jpg";
 // لم نعد بحاجة لـ { workshops } من الـ mockData لأننا سنجلبها من السيرفر
 import { useAuth } from "@/lib/auth";
 import Navbar from "@/components/Navbar_chbab";
+import { partners } from "@/data/mockData";
 
 const Index = () => {
   const { user } = useAuth();
@@ -359,6 +360,35 @@ const Index = () => {
                 </Link>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Partners Section */}
+      <section className="bg-muted/20 border-t border-border/40 py-16">
+        <div className="container">
+          <div className="text-center mb-10">
+            <h2 className="font-display text-2xl font-bold text-foreground tracking-tight mb-2">
+              Our Strategic Partners
+            </h2>
+            <p className="text-sm text-muted-foreground max-w-lg mx-auto">
+              Collaborating with industry leaders and academic clubs to bring state-of-the-art AI research and training to University Blida 1.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
+            {partners.filter(p => p.logo).map((partner) => (
+              <div 
+                key={partner.id} 
+                className="h-20 w-32 md:h-24 md:w-40 bg-white rounded-2xl shadow-sm border border-border/40 flex items-center justify-center p-4 md:p-6 grayscale hover:grayscale-0 transition-all duration-500 hover:shadow-xl hover:-translate-y-1.5 group"
+              >
+                <img 
+                  src={partner.logo} 
+                  alt={partner.name} 
+                  className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" 
+                  title={partner.name}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>

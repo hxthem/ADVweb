@@ -6,6 +6,7 @@ import {
   Handshake,
   Loader2,
 } from "lucide-react";
+import { partners as mockPartners } from "@/data/mockData";
 
 // هذه الثوابت تبقى خارج الدالة كما هي
 const iconMap = {
@@ -34,6 +35,9 @@ const PartnersPage = () => {
         return res.json();
       }),
   });
+
+  // Fallback to mock data if API is empty
+  const displayPartners = partners && partners.length > 0 ? partners : mockPartners;
 
   // 3. حالات التحميل والخطأ توضع هنا قبل الـ return الرئيسي
   if (isLoading)
@@ -66,36 +70,47 @@ const PartnersPage = () => {
         powering the AI House mission.
       </p>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {partners?.map((p) => {
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {displayPartners?.map((p) => {
           const Icon = iconMap[p.type] || Building2;
           const colorClass =
             typeColors[p.type] || "bg-muted text-muted-foreground";
           return (
             <div
               key={p._id || p.id}
-              className="group rounded-2xl border border-border/60 bg-card overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5"
+              className="group relative rounded-3xl border border-border/50 bg-card p-1 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-1"
             >
-              <div className="h-1 w-full gradient-primary opacity-30 group-hover:opacity-100 transition-opacity" />
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${colorClass} transition-transform group-hover:scale-110`}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-display font-semibold text-foreground">
-                      {p.name}
-                    </h3>
-                    <span className="text-[11px] text-muted-foreground font-semibold uppercase tracking-wide">
-                      {p.type}
-                    </span>
-                  </div>
+              <div className="absolute top-4 right-4 z-10">
+                 <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${colorClass}`}>
+                  {p.type}
+                </span>
+              </div>
+              
+              <div className="flex flex-col h-full">
+                {/* Logo Container */}
+                <div className="relative aspect-video rounded-2xl bg-white flex items-center justify-center p-8 mb-2 overflow-hidden border border-border/30">
+                  {p.logo ? (
+                    <img 
+                      src={p.logo} 
+                      alt={p.name} 
+                      className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110" 
+                    />
+                  ) : (
+                    <div className={`h-16 w-16 rounded-2xl ${colorClass} flex items-center justify-center`}>
+                      <Icon className="h-8 w-8" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {p.description}
-                </p>
+
+                <div className="px-5 pb-6 pt-2">
+                  <h3 className="font-display font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {p.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                    {p.description}
+                  </p>
+                </div>
               </div>
             </div>
           );

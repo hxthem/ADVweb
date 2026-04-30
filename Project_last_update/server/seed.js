@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 const Workshop = require('./models/Workshop');
+const Partner = require('./models/Partner');
 
 async function seedData() {
   try {
@@ -90,6 +91,34 @@ async function seedData() {
         maxParticipants: 100,
         status: 'published',
         creator: admin._id
+      },
+      {
+        title: 'Introduction to Neural Networks',
+        category: 'technical',
+        department: 'Computer Science',
+        topic: 'AI Fundamentals',
+        date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+        venue: 'Main Auditorium',
+        description: 'A comprehensive introduction to the mathematical foundations of neural networks and their implementation in Python.',
+        maxParticipants: 50,
+        status: 'published',
+        creator: admin._id,
+        resources: [
+          {
+            title: 'Neural Networks Basics (PDF)',
+            type: 'pdf',
+            url: 'http://localhost:5000/uploads/resources/nn_basics.pdf',
+            size: '2.5 MB',
+            description: 'Introduction slides for the workshop.'
+          },
+          {
+            title: 'Simple Perceptron Code',
+            type: 'code',
+            url: 'https://github.com/example/perceptron',
+            size: '15 KB',
+            description: 'Source code for the hands-on lab.'
+          }
+        ]
       }
     ];
 
@@ -100,6 +129,49 @@ async function seedData() {
         console.log(`- Created workshop: ${ws.title}`);
       } else {
         console.log(`- Workshop already exists: ${ws.title}`);
+      }
+    }
+
+    // 5. Create Sample Partners
+    console.log('\nPlanting partners...');
+    const samplePartners = [
+      { name: "Google Developer Groups", type: "industry", description: "Co-organizing workshops on TensorFlow and cloud AI services." },
+      { name: "University Rectorate", type: "rectorate", description: "Institutional support for AI House operations and cross-departmental coordination." },
+      { name: "Sonatrach Digital Lab", type: "industry", description: "Industry partnership for AI applications in energy sector research." },
+      { name: "CERIST Research Center", type: "academic", description: "Collaborative research in NLP and information retrieval for Arabic languages." },
+      { 
+        name: "Naftal", 
+        type: "industry", 
+        logo: "http://localhost:5000/uploads/partners/naftal.png",
+        description: "Strategic partnership with Algeria's national petroleum distribution company for AI-driven logistics optimization." 
+      },
+      { 
+        name: "Djezzy", 
+        type: "industry", 
+        logo: "http://localhost:5000/uploads/partners/djezzy.png",
+        description: "Collaborating on telecommunications data analytics and AI-powered customer service frameworks." 
+      },
+      { 
+        name: "Condor", 
+        type: "industry", 
+        logo: "http://localhost:5000/uploads/partners/condor.png",
+        description: "Research partnership for AI integration in smart home appliances and electronics manufacturing." 
+      },
+      { 
+        name: "ITC Blida", 
+        type: "academic", 
+        logo: "http://localhost:5000/uploads/partners/itc.png",
+        description: "The official Computer Science Club of University Blida 1, fostering student-led AI innovation." 
+      }
+    ];
+
+    for (const p of samplePartners) {
+      const exists = await Partner.findOne({ name: p.name });
+      if (!exists) {
+        await Partner.create(p);
+        console.log(`- Created partner: ${p.name}`);
+      } else {
+        console.log(`- Partner already exists: ${p.name}`);
       }
     }
 
